@@ -129,7 +129,7 @@ body{background-color:var(--background);background-image:radial-gradient(circle 
 
 /* Keep the success threshold visible without a separate instructions section. */
 main{padding-bottom:14px;}
-.timer-top{gap:12px;flex-shrink:0;}
+.timer-top{gap:12px;min-height:24px;flex-shrink:0;}
 .timing-tolerance{display:flex;align-items:center;gap:7px;font-size:10px;color:#97a090;white-space:nowrap;}
 .timing-tolerance strong{font:11px var(--font-geist-mono),monospace;color:var(--primary);}
 @media(min-width:581px){.timer-center{flex:1;display:flex;flex-direction:column;justify-content:center;}}
