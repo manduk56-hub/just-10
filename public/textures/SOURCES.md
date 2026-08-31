@@ -25,4 +25,4 @@ The current best-record icon follows **Ice Bucket Challenge** (`minecraft:story/
 - `task_frame_obtained.png` (26 × 26): https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.21.8/gui/sprites/advancements/task_frame_obtained.png
 - `task_frame_unobtained.png` (26 × 26): https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.21.8/gui/sprites/advancements/task_frame_unobtained.png
 
-The obsidian block icon is rendered with three CSS faces using the existing vanilla `obsidian.png` texture. It uses the gray frame before the first record and the gold frame once a record exists; the site does not grant Minecraft advancements.
+The obsidian block icon is rendered with three CSS faces using the existing vanilla `obsidian.png` texture. It uses the gray frame until a timing attempt falls within ±100 ms, then the gold frame. Successful attempts also display the icon in a full-page achievement dialog; the site does not grant Minecraft advancements. CSS brightness adjustments improve the icon's visibility against the site's brighter palette.

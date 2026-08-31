@@ -21,9 +21,6 @@ footer{display:flex;align-items:center;gap:18px;border-top:1px solid #28302a;pad
 @media(max-width:580px){.app-shell{padding:0 17px;}.site-header{height:67px;}.brand{font-size:21px;}.brand-icon{width:30px;height:30px;margin-right:9px;}.edition{display:none;}.intro{margin-bottom:19px;gap:13px;}h1{font-size:28px;letter-spacing:-1.4px;}.eyebrow{font-size:8px;letter-spacing:1.6px;}.intro-description{font-size:11px;max-width:285px;}.target-badge{font-size:10px;}.game{grid-template-columns:1fr;}.mine-scene{min-height:330px;border-right:0;border-bottom:1px solid #343d35;}.mine-scene canvas{width:100%;left:0;object-fit:cover;height:100%;}.scene-top{top:12px;}.block-label{bottom:75px;gap:2px;}.block-label .tiny-caption{display:none;}.block-label strong{font-size:14px;}.block-id{font-size:8px;}.scene-bottom{padding:12px 16px;}.timer-panel{padding:20px 25px 13px;}.timer-center{padding:21px 0 17px;}.timer-digits{font-size:72px;letter-spacing:-4px;}.timer-label{margin-bottom:8px;}.seconds{margin-top:8px;}.feedback{min-height:80px;}.main-action{height:49px;padding:0 15px;}.action-note{margin-top:9px;}.records{flex-wrap:wrap;padding:16px;gap:16px;}.best-record{min-width:auto;width:100%;border-right:0;border-bottom:1px solid var(--border);padding:0 0 14px;}.best-record>div{flex:1;flex-direction:row;align-items:center;justify-content:space-between;}.best-record .no-record{font-size:10px;}.recent-records{width:100%;}footer{font-size:8px;padding:19px 0;}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;}}
 .timer-digits .unknown-time{color:#bbc8b3;letter-spacing:-2px;}
-.success-banner{position:absolute;z-index:3;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:13px;min-width:216px;padding:15px 18px;border:1px solid #b1eb98a6;border-radius:8px;background:#122018ed;box-shadow:0 0 0 1px #b1eb9820,0 12px 34px #00000070;animation:success-pop .34s cubic-bezier(.2,.8,.2,1) both;pointer-events:none}.success-check{display:grid;place-items:center;width:37px;height:37px;border-radius:50%;background:var(--primary);color:#1b2b18;flex:none}.success-copy{display:flex;flex-direction:column;gap:3px}.success-copy>span{font:8px var(--font-geist-mono),monospace;letter-spacing:1.7px;color:#b1eb98}.success-copy strong{font-size:19px;font-weight:750;color:#f2f8ee;line-height:1.25}.success-copy small{font:10px var(--font-geist-mono),monospace;color:#9aae9a}.timer-digits .unknown-time{color:#bbc8b3;letter-spacing:-2px}@keyframes success-pop{from{opacity:0;transform:translate(-50%,-42%) scale(.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-@media(max-width:580px){.success-banner{min-width:190px;padding:12px 14px;gap:10px}.success-check{width:32px;height:32px}.success-check svg{width:17px}.success-copy strong{font-size:16px}.success-copy small{font-size:9px}}
-@media(prefers-reduced-motion:reduce){.success-banner{animation:none}}
 
 /* Minecraft-inspired beveled action control */
 .main-action{border-radius:2px;background:#7d857c;color:#f1f4ed;text-shadow:2px 2px 0 #384039;border:2px solid #c5cec1;border-right-color:#3b443c;border-bottom-color:#3b443c;box-shadow:inset 0 0 0 1px #8f998e,0 3px 0 #1d231f;}
@@ -139,4 +136,60 @@ main{padding-bottom:14px;}
 .timing-tolerance{display:flex;align-items:center;gap:7px;font-size:10px;color:#97a090;white-space:nowrap;}
 .timing-tolerance strong{font:11px var(--font-geist-mono),monospace;color:var(--primary);}
 @media(min-width:581px){.timer-center{flex:1;display:flex;flex-direction:column;justify-content:center;}}
+
+/* Brighter cave palette, with readable secondary text and achievement details. */
+:root,.dark{--background:#252f29;--foreground:#f1f6ec;--card:#344237;--card-foreground:#f1f6ec;--primary:#c4f5a3;--secondary:#405140;--muted:#3b4b3e;--muted-foreground:#c1ceba;--border:#596d57;}
+body{background-image:radial-gradient(ellipse at 50% -20%,#4b6549 0%,#252f29 70%);}
+.site-header,footer{border-color:#53654f;}
+.game{background:#344237;border-color:#65785e;box-shadow:0 0 0 1px #1d281e,0 16px 40px #14201638;}
+.timer-panel{background:linear-gradient(145deg,#3b4b3e,#303c33);}
+.mine-scene{background:#2b3c33;border-color:#63765c;}
+.scene-bottom{background:#29392be8;border-color:#65775f;}
+.brand-icon,.target-badge,.difficulty-chip,.sound-button{background:#3b4e39;border-color:#819477;}
+.intro-description,.edition,.version,.timer-label,.timing-tolerance,.feedback>span,.action-note,.action-note button{color:#c4d2bc;}
+.target-badge,.feedback>strong,.status-pill.stopped{color:#eef5e7;}
+.tiny-caption,.world-label,.block-label .tiny-caption,.block-id{color:#c4d2bd;}
+.world-subline,.world-coords,.block-stats,.seconds{color:#aabd9f;}
+.world-divider{color:#adc39f;}
+.block-label strong{color:#f5f8f0;text-shadow:0 2px 3px #17231a;}
+.timer-digits>span,.timer-digits .unknown-time{color:#d8e5ce;}
+.timer-digits.success,.timer-digits.success>span{color:var(--primary);}
+.status-pill{background:#4b633d;color:#e0f4ce;}
+.status-pill.stopped{background:#4b5944;}
+.records{background:#384736;border-color:#718369;padding-top:14px;padding-bottom:14px;}
+.best-record .tiny-caption,.recent-title,.session-note,.empty-record,.best-record .no-record,footer{color:#cbd7c0;}
+.best-record strong,.attempt{color:#f0f7e8;}
+.best-record strong small,.attempt small{color:#c8d7bc;}
+.recent-title>span{background:#536b44;color:#effbde;}
+.attempt.good{color:var(--primary);}
+.record-icon{width:52px;height:52px;filter:brightness(1.15);}
+.record-icon .obsidian-icon{transform:scale(1.333333);filter:brightness(1.7);}
+.obsidian-left{filter:brightness(.9);}
+.obsidian-right{filter:brightness(.75);}
+.action-pickaxe,.achievement-retry img{width:24px;height:24px;object-fit:contain;image-rendering:pixelated;flex:none;}
+
+/* Native modal uses the top layer so the whole page is covered and inert. */
+.achievement-dialog{width:min(460px,calc(100vw - 32px));max-height:calc(100dvh - 32px);margin:auto;padding:30px 30px 20px;overflow:auto;background:linear-gradient(145deg,#45563e,#2f3c30);color:#f5f9ee;border:3px solid #b5c89a;border-right-color:#718060;border-bottom-color:#718060;border-radius:3px;box-shadow:inset 0 0 0 3px #253121,0 0 0 2px #182215,0 24px 80px #0a120b80;text-align:center;}
+.achievement-dialog[open]{display:flex;flex-direction:column;align-items:center;animation:achievement-enter .22s ease-out;}
+.achievement-dialog::backdrop{background:#101a16ad;backdrop-filter:blur(4px);}
+.achievement-close{position:absolute;top:12px;right:12px;display:grid;place-items:center;width:36px;height:36px;padding:0;color:#e3efda;background:#293827;border:1px solid #8ca17b;border-radius:2px;}
+.achievement-close:hover{background:#506447;}
+.achievement-kicker{margin:0 0 8px;font:9px var(--font-geist-mono),monospace;letter-spacing:2px;color:#ebd98f;}
+.achievement-dialog h2{margin:0;font-size:34px;font-weight:800;line-height:1.3;color:#fff0a5;text-shadow:2px 3px 0 #4b4325;}
+.achievement-dialog .achievement-emblem{width:104px;height:104px;margin:24px 0 18px;}
+.achievement-emblem .obsidian-icon{transform:scale(2.666667);}
+.achievement-dialog h3{margin:0 0 10px;font-size:22px;font-weight:700;color:#f3f9eb;}
+.achievement-dialog>p:not(.achievement-kicker){margin:0;color:#d2dfc7;font-size:12px;line-height:1.8;}
+.achievement-result{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;margin:24px 0;padding:17px 10px;background:#253222;border:1px solid #718360;}
+.achievement-result>div{display:flex;flex-direction:column;gap:8px;}
+.achievement-result>div+div{border-left:1px solid #627553;}
+.achievement-result span{font-size:10px;color:#c2d2b5;}
+.achievement-result strong{font:22px var(--font-geist-mono),monospace;color:#d8ffb8;white-space:nowrap;}
+.achievement-result small{font:11px Arial,sans-serif;margin-left:3px;color:#cbdcbb;}
+.achievement-dialog .achievement-confirm{justify-content:center;min-height:46px;flex:none;}
+.achievement-dialog .achievement-retry{margin-top:12px;min-height:38px;color:#e2efd5;gap:8px;flex:none;}
+@keyframes achievement-enter{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:420px){.achievement-dialog{padding:28px 20px 16px}.achievement-dialog h2{font-size:29px}.achievement-dialog h3{font-size:19px}.achievement-result{gap:8px}.achievement-result strong{font-size:19px}}
+@media(max-height:650px){.achievement-dialog{padding-top:22px}.achievement-dialog .achievement-emblem{width:78px;height:78px;margin:14px 0}.achievement-emblem .obsidian-icon{transform:scale(2)}.achievement-dialog h2{font-size:29px}.achievement-result{margin:16px 0;padding:12px 8px}}
+@media(prefers-reduced-motion:reduce){.achievement-dialog[open]{animation:none}}
 
