@@ -65,4 +65,5 @@ footer{display:flex;align-items:center;gap:18px;border-top:1px solid #28302a;pad
   .how-to{display:none}
   .records{min-height:58px;margin-top:8px}
 }
+@media(min-width:1101px){.app-shell{max-width:1280px}}
 
