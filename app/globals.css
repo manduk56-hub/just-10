@@ -110,3 +110,12 @@ body{background-color:var(--background);background-image:radial-gradient(circle 
 .block-stats{font:7px var(--font-geist-mono),monospace;letter-spacing:.7px;color:#5f7064;}
 @media(max-width:580px){.scene-world-info{gap:3px}.world-subline,.world-coords{font-size:6px}.difficulty-chip{font-size:7px;padding:4px 5px}.scene-tools{gap:6px}.block-stats{font-size:6px;letter-spacing:.3px}}
 
+/* Inventory details: the selected diamond pickaxe and bucket slots. */
+.brand-icon img{width:27px;height:27px;object-fit:contain;image-rendering:pixelated;transform:rotate(-8deg);}
+.hotbar{display:flex;align-items:center;gap:2px;padding:3px;background:#171a1a;border:2px solid #3b403f;box-shadow:inset 1px 1px 0 #111414,inset -1px -1px 0 #666d67;flex:none;}
+.hotbar-slot{width:31px;height:31px;display:grid;place-items:center;background:#252a29;border:2px solid #111515;box-shadow:inset 1px 1px 0 #414844,inset -1px -1px 0 #343a37;}
+.hotbar-slot.selected{border-color:#e0e5dc;box-shadow:inset 1px 1px 0 #ffffffa8,inset -1px -1px 0 #6f776e,0 0 0 1px #191d1b;}
+.hotbar-slot img{width:27px;height:27px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(2px 2px 0 #101312);}
+@media(max-width:800px){.hotbar{gap:1px;padding:2px}.hotbar-slot{width:25px;height:27px}.hotbar-slot img{width:23px;height:23px}}
+@media(max-width:580px){.hotbar{display:none}.brand-icon img{width:23px;height:23px}}
+
