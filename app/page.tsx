@@ -89,6 +89,7 @@ export default function Home() {
         <div className={`mine-scene ${phase === 'running' ? 'mining' : ''}`}>
           <div className="scene-top"><span className="world-label"><span className="live-dot" /> OVERWORLD <span className="world-divider">/</span> Y: −59</span><Button variant="ghost" size="icon" className="sound-button" aria-label={sound ? '소리 끄기' : '소리 켜기'} aria-pressed={sound} onClick={() => { setSound(!sound); soundEnabled.current = !sound; }}>{sound ? <Volume2 /> : <VolumeX />}</Button></div>
           <MiningScene elapsed={elapsed} phase={phase} success={success} />
+          {success && <div className="success-banner" role="status" aria-live="assertive"><span className="success-check"><Check size={20} strokeWidth={3} /></span><span className="success-copy"><span>OBSIDIAN MINED</span><strong>10초 성공!</strong><small>오차 ±{format(Math.abs(error))}초</small></span></div>}
           <div className="block-label"><span className="tiny-caption">{success ? 'BLOCK COLLECTED' : 'TARGET BLOCK'}</span><strong>{success ? '흑요석 획득!' : '흑요석'}</strong><span className="block-id">minecraft:obsidian</span></div>
           <div className="scene-bottom"><div className="tool-slot"><img src="/textures/diamond_pickaxe.png" alt="" /><span><strong>다이아몬드 곡괭이</strong><small>DIAMOND PICKAXE</small></span></div><span className="mining-status">{phase === 'running' ? <><span className="live-dot" /> 채굴 중</> : success ? <><Check size={13} /> 채굴 완료</> : <><Crosshair size={13} /> 채굴 준비</>}</span></div>
         </div>
