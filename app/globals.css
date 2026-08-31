@@ -111,7 +111,8 @@ body{background-color:var(--background);background-image:radial-gradient(circle 
 @media(max-width:580px){.scene-world-info{gap:3px}.world-subline,.world-coords{font-size:6px}.difficulty-chip{font-size:7px;padding:4px 5px}.scene-tools{gap:6px}.block-stats{font-size:6px;letter-spacing:.3px}}
 
 /* Inventory details: the selected diamond pickaxe and bucket slots. */
-.brand-icon img{width:27px;height:27px;object-fit:contain;image-rendering:pixelated;transform:rotate(-8deg);}
+.brand-icon{flex:none;background:#202a22;border:1px solid #596451;border-radius:4px;}
+.brand-icon img{display:block;width:24px;height:24px;object-fit:contain;image-rendering:pixelated;}
 .mine-scene{container-type:inline-size;container-name:mining;}
 /* Vanilla GUI pixels: 182×22 strip, 20-pixel slot pitch, 24×23 selection. */
 .hotbar{--hotbar-scale:2;display:grid;grid-template-columns:repeat(9,calc(20px * var(--hotbar-scale)));width:calc(182px * var(--hotbar-scale));height:calc(22px * var(--hotbar-scale));padding:0 calc(1px * var(--hotbar-scale));background:url('/textures/hotbar.png') center/100% 100% no-repeat;image-rendering:pixelated;flex:none;}
@@ -121,5 +122,5 @@ body{background-color:var(--background);background-image:radial-gradient(circle 
 @container mining (max-width:610px){.scene-bottom{justify-content:center}.scene-bottom .tool-slot,.scene-bottom .mining-status{display:none}}
 @container mining (max-width:400px){.hotbar{--hotbar-scale:1.5}}
 @container mining (max-width:300px){.hotbar{--hotbar-scale:1}}
-@media(max-width:580px){.brand-icon img{width:23px;height:23px}}
+@media(max-width:580px){.brand-icon img{width:20px;height:20px}}
 
