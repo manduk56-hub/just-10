@@ -10,3 +10,11 @@ Added for the vanilla hotbar layout (Java Edition 1.21.8):
 - `torch.png` (16 × 16): https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.21.8/blocks/torch.png
 
 Hotbar placement follows the original strip's 20-pixel slot pitch. Selection uses the original separate sprite; images are not recolored or redrawn.
+
+Added for the best-record advancement icon (Java Edition 1.21.8):
+
+- `challenge_frame_obtained.png` (26 × 26): https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.21.8/gui/sprites/advancements/challenge_frame_obtained.png
+- `challenge_frame_unobtained.png` (26 × 26): https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.21.8/gui/sprites/advancements/challenge_frame_unobtained.png
+- `diamond.png` (16 × 16): https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.21.8/items/diamond.png
+
+The best-record icon combines the original challenge frame and diamond sprite. It uses the gray frame before the first record and the gold frame once a record exists.
