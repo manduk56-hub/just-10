@@ -112,10 +112,14 @@ body{background-color:var(--background);background-image:radial-gradient(circle 
 
 /* Inventory details: the selected diamond pickaxe and bucket slots. */
 .brand-icon img{width:27px;height:27px;object-fit:contain;image-rendering:pixelated;transform:rotate(-8deg);}
-.hotbar{display:flex;align-items:center;gap:2px;padding:3px;background:#171a1a;border:2px solid #3b403f;box-shadow:inset 1px 1px 0 #111414,inset -1px -1px 0 #666d67;flex:none;}
-.hotbar-slot{width:31px;height:31px;display:grid;place-items:center;background:#252a29;border:2px solid #111515;box-shadow:inset 1px 1px 0 #414844,inset -1px -1px 0 #343a37;}
-.hotbar-slot.selected{border-color:#e0e5dc;box-shadow:inset 1px 1px 0 #ffffffa8,inset -1px -1px 0 #6f776e,0 0 0 1px #191d1b;}
-.hotbar-slot img{width:27px;height:27px;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(2px 2px 0 #101312);}
-@media(max-width:800px){.hotbar{gap:1px;padding:2px}.hotbar-slot{width:25px;height:27px}.hotbar-slot img{width:23px;height:23px}}
-@media(max-width:580px){.hotbar{display:none}.brand-icon img{width:23px;height:23px}}
+.mine-scene{container-type:inline-size;container-name:mining;}
+/* Vanilla GUI pixels: 182×22 strip, 20-pixel slot pitch, 24×23 selection. */
+.hotbar{--hotbar-scale:2;display:grid;grid-template-columns:repeat(9,calc(20px * var(--hotbar-scale)));width:calc(182px * var(--hotbar-scale));height:calc(22px * var(--hotbar-scale));padding:0 calc(1px * var(--hotbar-scale));background:url('/textures/hotbar.png') center/100% 100% no-repeat;image-rendering:pixelated;flex:none;}
+.hotbar-slot{position:relative;display:grid;place-items:center;width:calc(20px * var(--hotbar-scale));height:100%;}
+.hotbar-slot.selected::before{content:'';position:absolute;z-index:1;left:calc(-2px * var(--hotbar-scale));top:calc(-1px * var(--hotbar-scale));width:calc(24px * var(--hotbar-scale));height:calc(23px * var(--hotbar-scale));background:url('/textures/hotbar_selection.png') center/100% 100% no-repeat;pointer-events:none;}
+.hotbar-slot img{width:calc(16px * var(--hotbar-scale));height:calc(16px * var(--hotbar-scale));object-fit:contain;image-rendering:pixelated;}
+@container mining (max-width:610px){.scene-bottom{justify-content:center}.scene-bottom .tool-slot,.scene-bottom .mining-status{display:none}}
+@container mining (max-width:400px){.hotbar{--hotbar-scale:1.5}}
+@container mining (max-width:300px){.hotbar{--hotbar-scale:1}}
+@media(max-width:580px){.brand-icon img{width:23px;height:23px}}
 
