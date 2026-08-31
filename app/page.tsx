@@ -42,10 +42,22 @@ function MiningScene({ elapsed, phase, success }: { elapsed: number; phase: Phas
     const broken = phase === 'stopped' && success;
     const shake = phase === 'running' ? Math.sin(elapsed / 36) * Math.max(0, Math.sin(elapsed / 90)) * 2 : 0;
     const size = broken ? 0.4 : 0.95;
+    const crackLevel = Math.min(9, Math.max(0, Math.floor(elapsed / 850)));
     ctx.save(); ctx.translate(400 + shake, broken ? 275 : 260); ctx.scale(size, size);
     const face = (a: number, b: number, c: number, d: number, x: number, y: number, shade: string) => {
       ctx.save(); ctx.transform(a, b, c, d, x, y); ctx.drawImage(img.obsidian, 0, 0, 16, 16); ctx.fillStyle = shade; ctx.fillRect(0, 0, 16, 16);
       if (elapsed > 700 && !broken) { ctx.globalAlpha = 0.8; ctx.drawImage(img[`destroy_stage_${Math.min(9, Math.floor(elapsed / 1000))}`], 0, 0, 16, 16); }
+      if (crackLevel > 0 && !broken) {
+        ctx.globalAlpha = 0.76; ctx.strokeStyle = '#d9c8e8'; ctx.lineWidth = 0.62; ctx.lineCap = 'square'; ctx.beginPath();
+        ctx.moveTo(8, 0); ctx.lineTo(7, 3); ctx.lineTo(9, 6); ctx.lineTo(8, 9);
+        if (crackLevel > 1) { ctx.moveTo(7, 3); ctx.lineTo(4, 5); ctx.lineTo(2, 8); }
+        if (crackLevel > 2) { ctx.moveTo(9, 6); ctx.lineTo(12, 5); ctx.lineTo(14, 7); }
+        if (crackLevel > 3) { ctx.moveTo(8, 9); ctx.lineTo(6, 12); ctx.lineTo(7, 16); }
+        if (crackLevel > 4) { ctx.moveTo(8, 9); ctx.lineTo(11, 11); ctx.lineTo(13, 15); }
+        if (crackLevel > 5) { ctx.moveTo(4, 5); ctx.lineTo(5, 1); ctx.moveTo(12, 5); ctx.lineTo(15, 3); }
+        if (crackLevel > 6) { ctx.moveTo(6, 12); ctx.lineTo(3, 13); ctx.lineTo(1, 15); }
+        ctx.stroke(); ctx.globalAlpha = 1;
+      }
       ctx.restore();
     };
     face(8, 4, -8, 4, 0, -144, '#9b8ad513'); face(8, 4, 0, 10, -128, -80, '#0000000a'); face(8, -4, 0, 10, 0, -16, '#00000044'); ctx.restore();
@@ -90,7 +102,7 @@ export default function Home() {
           <div className="scene-top"><span className="world-label"><span className="live-dot" /> OVERWORLD <span className="world-divider">/</span> Y: −59</span><Button variant="ghost" size="icon" className="sound-button" aria-label={sound ? '소리 끄기' : '소리 켜기'} aria-pressed={sound} onClick={() => { setSound(!sound); soundEnabled.current = !sound; }}>{sound ? <Volume2 /> : <VolumeX />}</Button></div>
           <MiningScene elapsed={elapsed} phase={phase} success={success} />
           {success && <div className="success-banner" role="status" aria-live="assertive"><span className="success-check"><Check size={20} strokeWidth={3} /></span><span className="success-copy"><span>OBSIDIAN MINED</span><strong>10초 성공!</strong><small>오차 ±{format(Math.abs(error))}초</small></span></div>}
-          <div className="block-label"><span className="tiny-caption">{success ? 'BLOCK COLLECTED' : 'TARGET BLOCK'}</span><strong>{success ? '흑요석 획득!' : '흑요석'}</strong><span className="block-id">minecraft:obsidian</span></div>
+          <div className="block-label"><span className="tiny-caption">{success ? 'BLOCK COLLECTED' : 'TARGET BLOCK'}</span><strong>{success ? '흑요석 획득!' : '흑요석'}</strong><span className="block-id">minecraft:obsidian</span>{phase === 'running' && <span className="block-damage">균열 단계 {Math.min(10, Math.max(1, Math.floor(elapsed / 850)))} / 10</span>}</div>
           <div className="scene-bottom"><div className="tool-slot"><img src="/textures/diamond_pickaxe.png" alt="" /><span><strong>다이아몬드 곡괭이</strong><small>DIAMOND PICKAXE</small></span></div><span className="mining-status">{phase === 'running' ? <><span className="live-dot" /> 채굴 중</> : success ? <><Check size={13} /> 채굴 완료</> : <><Crosshair size={13} /> 채굴 준비</>}</span></div>
         </div>
         <div className="timer-panel">
