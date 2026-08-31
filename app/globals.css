@@ -50,4 +50,19 @@ footer{display:flex;align-items:center;gap:18px;border-top:1px solid #28302a;pad
   .records{min-height:63px}
   .how-to{margin:12px 0 18px}
 }
+@media(max-height:900px) and (min-width:581px){
+  .timer-panel{padding:13px 25px 8px}
+  .timer-center{padding:12px 0 9px;min-height:0}
+  .timer-label{margin-bottom:7px}
+  .timer-digits{font-size:clamp(46px,7vh,65px)}
+  .seconds{margin-top:6px}
+  .feedback{min-height:58px;gap:5px}
+  .main-action,.action-note{flex-shrink:0}
+  .main-action{height:46px}
+  .action-note{margin-top:6px}
+}
+@media(max-height:760px) and (min-width:581px){
+  .how-to{display:none}
+  .records{min-height:58px;margin-top:8px}
+}
 
