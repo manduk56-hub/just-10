@@ -63,7 +63,30 @@ footer{display:flex;align-items:center;gap:18px;border-top:1px solid #28302a;pad
 }
 @media(max-height:760px) and (min-width:581px){
   .how-to{display:none}
-  .records{min-height:58px;margin-top:8px}
+  .records{display:none}
+  .game{min-height:410px}
+}
+@media(max-height:680px) and (min-width:581px){
+  .intro-description{display:none}
+  .intro{margin-bottom:10px}
+  .game{min-height:380px}
+  .timer-panel{padding:10px 22px 7px}
+  .timer-center{padding:8px 0 6px}
+  .timer-digits{font-size:clamp(42px,7vh,58px)}
+  .feedback{min-height:48px}
+  .main-action{height:44px}
+}
+@media(max-height:560px) and (min-width:581px){
+  .site-header{height:60px}
+  main{padding-top:10px}
+  .game{min-height:330px}
+  .timer-panel{padding:8px 18px 5px}
+  .timer-center{padding:5px 0 4px}
+  .timer-digits{font-size:42px}
+  .feedback{min-height:37px}
+  .feedback>span{display:none}
+  .main-action{height:40px}
+  .action-note{margin-top:3px}
 }
 @media(min-width:1101px){.app-shell{max-width:1280px}}
 
