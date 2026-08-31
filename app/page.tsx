@@ -14,7 +14,7 @@ function MiningScene({ elapsed, phase, success }: { elapsed: number; phase: Phas
   const [failed, setFailed] = useState(false);
   useEffect(() => {
     let alive = true;
-    const names = ['stone', 'obsidian', 'diamond_pickaxe', ...Array.from({ length: 10 }, (_, i) => `destroy_stage_${i}`)];
+    const names = ['stone', 'obsidian', 'diamond_pickaxe'];
     Promise.all(names.map(name => new Promise<void>((resolve, reject) => {
       const img = new Image(); img.onload = () => { assets.current[name] = img; resolve(); }; img.onerror = reject; img.src = `/textures/${name}.png`;
     }))).then(() => { if (alive) setLoaded(true); }).catch(() => { if (alive) setFailed(true); });
@@ -45,7 +45,6 @@ function MiningScene({ elapsed, phase, success }: { elapsed: number; phase: Phas
     ctx.save(); ctx.translate(400 + shake, broken ? 275 : 260); ctx.scale(size, size);
     const face = (a: number, b: number, c: number, d: number, x: number, y: number, shade: string) => {
       ctx.save(); ctx.transform(a, b, c, d, x, y); ctx.drawImage(img.obsidian, 0, 0, 16, 16); ctx.fillStyle = shade; ctx.fillRect(0, 0, 16, 16);
-      if (elapsed > 700 && !broken) { ctx.globalAlpha = 0.8; ctx.drawImage(img[`destroy_stage_${Math.min(9, Math.floor(elapsed / 1000))}`], 0, 0, 16, 16); }
       ctx.restore();
     };
     face(8, 4, -8, 4, 0, -144, '#9b8ad513'); face(8, 4, 0, 10, -128, -80, '#0000000a'); face(8, -4, 0, 10, 0, -16, '#00000044'); ctx.restore();
