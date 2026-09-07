@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, RotateCcw, Target, Volume2, VolumeX, X } from 'lucide-react';
+import { ArrowUpRight, RotateCcw, Volume2, VolumeX, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 type Phase = 'ready' | 'running' | 'stopped';
 type Attempt = { time: number; timeout: boolean };
@@ -109,7 +109,6 @@ export default function Home() {
   const resultTitle = timeout ? '조금 늦었어요!' : success ? '완벽한 채굴!' : error < 0 ? '조금 더 기다려볼까요?' : '아깝다, 조금 늦었어요!';
   return <div className="app-shell">
     <main>
-      <div className="intro"><div><p className="eyebrow"><span /> THE OBSIDIAN CHALLENGE</p><h1>딱 10초, 캐낼 수 있나요<span>?</span></h1><p className="intro-description">다이아몬드 곡괭이 한 자루. 흑요석 한 블록. 그리고 당신의 타이밍.</p></div><div className="target-badge"><Target size={18} /><span>목표 시간 <strong>10.000s</strong></span></div></div>
       <section className="game" aria-label="10초 타이밍 게임">
         <div className={`mine-scene ${phase === 'running' ? 'mining' : ''}`}>
           <div className="scene-top"><div className="scene-world-info"><span className="world-label"><span className="live-dot" /> OVERWORLD <span className="world-divider">/</span> Y: −59</span><span className="world-subline">BIOME: DEEP DARK · LIGHT 0</span><span className="world-coords">XYZ: 124 / −59 / −38</span></div><div className="scene-tools"><span className="difficulty-chip">HARD</span><Button variant="ghost" size="icon" className="sound-button" aria-label={sound ? '소리 끄기' : '소리 켜기'} aria-pressed={sound} onClick={() => { setSound(!sound); soundEnabled.current = !sound; }}>{sound ? <Volume2 /> : <VolumeX />}</Button></div></div>
