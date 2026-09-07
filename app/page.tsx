@@ -108,7 +108,6 @@ export default function Home() {
   useEffect(() => () => { void audio.current?.close(); }, []);
   const resultTitle = timeout ? '조금 늦었어요!' : success ? '완벽한 채굴!' : error < 0 ? '조금 더 기다려볼까요?' : '아깝다, 조금 늦었어요!';
   return <div className="app-shell">
-    <header className="site-header"><a className="brand" href="/" aria-label="JUST 10 홈"><span className="brand-icon"><img src="/textures/diamond_pickaxe.png" alt="" /></span>JUST 10<span className="brand-dot">.</span></a><div className="header-right"><span className="edition">A LITTLE TIMING CHALLENGE</span><span className="version">v1.0</span></div></header>
     <main>
       <div className="intro"><div><p className="eyebrow"><span /> THE OBSIDIAN CHALLENGE</p><h1>딱 10초, 캐낼 수 있나요<span>?</span></h1><p className="intro-description">다이아몬드 곡괭이 한 자루. 흑요석 한 블록. 그리고 당신의 타이밍.</p></div><div className="target-badge"><Target size={18} /><span>목표 시간 <strong>10.000s</strong></span></div></div>
       <section className="game" aria-label="10초 타이밍 게임">
