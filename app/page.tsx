@@ -6,17 +6,8 @@ type Phase = 'ready' | 'running' | 'stopped';
 type Attempt = { time: number; timeout: boolean };
 const TARGET = 10000, LIMIT = 12000, TOLERANCE = 100;
 const format = (ms: number) => (ms / 1000).toFixed(3);
-const VISITOR_STORAGE_KEY = 'just10:anonymous-player';
 const ATTEMPT_STORAGE_KEY = 'just10:attempt-used';
 const RESULT_STORAGE_KEY = 'just10:attempt-result';
-
-function getAnonymousVisitorId() {
-  const stored = localStorage.getItem(VISITOR_STORAGE_KEY);
-  if (stored) return stored;
-  const id = crypto.randomUUID();
-  localStorage.setItem(VISITOR_STORAGE_KEY, id);
-  return id;
-}
 
 function AchievementIcon({ obtained = false, large = false }: { obtained?: boolean; large?: boolean }) {
   return <span className={`record-icon ${obtained ? 'obtained' : ''} ${large ? 'achievement-emblem' : ''}`} aria-hidden="true"><span className="obsidian-icon"><span className="obsidian-top" /><span className="obsidian-left" /><span className="obsidian-right" /></span></span>;
@@ -96,7 +87,6 @@ export default function Home() {
   const [phase, setPhase] = useState<Phase>('ready'); const [elapsed, setElapsed] = useState(0); const [attempts, setAttempts] = useState<Attempt[]>([]); const [sound, setSound] = useState(true);
   const [attemptUsed, setAttemptUsed] = useState<boolean | null>(null);
   const [achievementOpen, setAchievementOpen] = useState(false);
-  const [successfulPlayers, setSuccessfulPlayers] = useState<number | null>(null);
   const start = useRef(0), running = useRef(false), soundEnabled = useRef(true), audio = useRef<AudioContext | null>(null), lastHit = useRef(0);
   const error = elapsed - TARGET, success = phase === 'stopped' && Math.abs(error) <= TOLERANCE, timeout = phase === 'stopped' && attempts[0]?.timeout;
   const timerHidden = phase === 'running' && elapsed >= 6000;
@@ -111,24 +101,10 @@ export default function Home() {
       osc.connect(gain); gain.connect(ac.destination); osc.start(); osc.stop(ac.currentTime + 0.16);
     } catch { /* Audio is optional. */ }
   }, []);
-  const registerSuccess = useCallback(async (time: number) => {
-    try {
-      const response = await fetch('/api/success-count', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ visitorId: getAnonymousVisitorId(), time }) });
-      const data = await response.json() as { count?: unknown };
-      if (response.ok && typeof data.count === 'number') setSuccessfulPlayers(data.count);
-    } catch { /* The game remains playable if the shared counter is unavailable. */ }
-  }, []);
-  const finish = useCallback((time: number, timedOut = false) => { if (!running.current) return; running.current = false; const won = !timedOut && Math.abs(time - TARGET) <= TOLERANCE; const attempt = { time, timeout: timedOut }; try { localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(attempt)); } catch { /* Keep the current-session result when storage is unavailable. */ } setElapsed(time); setPhase('stopped'); setAttempts([attempt]); setAchievementOpen(won); if (won) void registerSuccess(time); play(won ? 'success' : 'stop'); }, [play, registerSuccess]);
+  const finish = useCallback((time: number, timedOut = false) => { if (!running.current) return; running.current = false; const won = !timedOut && Math.abs(time - TARGET) <= TOLERANCE; const attempt = { time, timeout: timedOut }; try { localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(attempt)); } catch { /* Keep the current-session result when storage is unavailable. */ } setElapsed(time); setPhase('stopped'); setAttempts([attempt]); setAchievementOpen(won); play(won ? 'success' : 'stop'); }, [play]);
   const act = useCallback(() => { if (running.current) { const time = performance.now() - start.current; finish(Math.min(LIMIT, time), time >= LIMIT); } else { if (attemptUsed !== false) return; try { localStorage.setItem(ATTEMPT_STORAGE_KEY, '1'); } catch { /* State still locks this session. */ } setAttemptUsed(true); setAchievementOpen(false); start.current = performance.now(); running.current = true; lastHit.current = 0; setElapsed(0); setPhase('running'); play('start'); } }, [attemptUsed, finish, play]);
   useEffect(() => { const keydown = (event: KeyboardEvent) => { if (achievementOpen || event.code !== 'Space' || event.repeat || event.altKey || event.ctrlKey || event.metaKey) return; const target = event.target as HTMLElement; if (target.closest('input,textarea,select,[contenteditable="true"],button,a')) return; event.preventDefault(); act(); }; window.addEventListener('keydown', keydown); return () => window.removeEventListener('keydown', keydown); }, [act, achievementOpen]);
   useEffect(() => { if (phase !== 'running') return; let frame: number; const tick = () => { if (!running.current) return; const time = performance.now() - start.current; if (time >= LIMIT) { finish(LIMIT, true); return; } setElapsed(time); if (time - lastHit.current > 540) { lastHit.current = time; play('hit'); } frame = requestAnimationFrame(tick); }; frame = requestAnimationFrame(tick); return () => cancelAnimationFrame(frame); }, [phase, finish, play]);
-  useEffect(() => {
-    const controller = new AbortController();
-    void fetch('/api/success-count', { signal: controller.signal }).then(response => response.json()).then((data: { count?: unknown }) => {
-      if (typeof data.count === 'number') setSuccessfulPlayers(data.count);
-    }).catch(() => {});
-    return () => controller.abort();
-  }, []);
   useEffect(() => {
     try {
       const used = localStorage.getItem(ATTEMPT_STORAGE_KEY) === '1';
@@ -164,7 +140,7 @@ export default function Home() {
           <div className="action-note"><span>한 사람당 한 번 · 12초 자동 종료</span></div>
         </div>
       </section>
-      <section className="records" aria-label="전체 성공자와 이번 방문의 기록"><div className="best-record"><AchievementIcon obtained={best !== null && best <= TOLERANCE} /><div><span className="tiny-caption">MY PRECISION</span><strong>{best === null ? <span className="no-record">첫 기록에 도전해 보세요</span> : <>±{format(best)}<small>초</small></>}</strong></div></div><div className="recent-records"><div className="recent-title">내 도전 기록 <span>{attempts.length}</span></div><div className="attempt-list">{attempts.length === 0 ? <span className="empty-record">아직 기록이 없어요. 첫 블록을 캐볼까요?</span> : attempts.map((a, i) => <span key={`${attempts.length}-${i}`} className={`attempt ${Math.abs(a.time - TARGET) <= TOLERANCE ? 'good' : ''}`}>{format(a.time)}<small>s</small>{i === 0 && <span className="new-dot" />}</span>)}</div></div><div className="global-success" aria-live="polite"><span>OBSIDIAN ACHIEVERS</span><strong>{successfulPlayers === null ? '—' : successfulPlayers.toLocaleString('ko-KR')}<small>명</small></strong><em>익명 브라우저 기준</em></div></section>
+      <section className="records" aria-label="이번 도전의 기록"><div className="best-record"><AchievementIcon obtained={best !== null && best <= TOLERANCE} /><div><span className="tiny-caption">MY PRECISION</span><strong>{best === null ? <span className="no-record">첫 기록에 도전해 보세요</span> : <>±{format(best)}<small>초</small></>}</strong></div></div><div className="recent-records"><div className="recent-title">내 도전 기록 <span>{attempts.length}</span></div><div className="attempt-list">{attempts.length === 0 ? <span className="empty-record">아직 기록이 없어요. 첫 블록을 캐볼까요?</span> : attempts.map((a, i) => <span key={`${attempts.length}-${i}`} className={`attempt ${Math.abs(a.time - TARGET) <= TOLERANCE ? 'good' : ''}`}>{format(a.time)}<small>s</small>{i === 0 && <span className="new-dot" />}</span>)}</div></div></section>
     </main>
     <footer><span>작은 도전, 완벽한 타이밍.</span><a href="https://github.com/PrismarineJS/minecraft-assets" target="_blank" rel="noreferrer">Minecraft 텍스처 <ArrowUpRight size={12} /></a><span>비공식 팬 미니게임 · Mojang / Microsoft와 무관합니다.</span></footer>
     {achievementOpen && success && <AchievementDialog time={elapsed} onClose={() => setAchievementOpen(false)} />}
