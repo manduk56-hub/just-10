@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, RotateCcw, Volume2, VolumeX, X } from 'lucide-react';
+import { ArrowUpRight, RotateCcw, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 type Phase = 'ready' | 'running' | 'stopped';
 type Attempt = { time: number; timeout: boolean };
@@ -84,34 +84,22 @@ function MiningScene({ elapsed, phase, success }: { elapsed: number; phase: Phas
 }
 
 export default function Home() {
-  const [phase, setPhase] = useState<Phase>('ready'); const [elapsed, setElapsed] = useState(0); const [attempts, setAttempts] = useState<Attempt[]>([]); const [sound, setSound] = useState(true);
+  const [phase, setPhase] = useState<Phase>('ready'); const [elapsed, setElapsed] = useState(0); const [attempts, setAttempts] = useState<Attempt[]>([]);
   const [achievementOpen, setAchievementOpen] = useState(false);
-  const start = useRef(0), running = useRef(false), soundEnabled = useRef(true), audio = useRef<AudioContext | null>(null), lastHit = useRef(0);
+  const start = useRef(0), running = useRef(false);
   const error = elapsed - TARGET, success = phase === 'stopped' && Math.abs(error) <= TOLERANCE, timeout = phase === 'stopped' && attempts[0]?.timeout;
   const timerHidden = phase === 'running' && elapsed >= 6000;
   const best = attempts.length ? Math.min(...attempts.map(a => Math.abs(a.time - TARGET))) : null;
-  const play = useCallback((kind: 'hit' | 'start' | 'success' | 'stop') => {
-    if (!soundEnabled.current) return;
-    try { const ac = audio.current ?? (audio.current = new AudioContext()); if (ac.state === 'suspended') void ac.resume().catch(() => {});
-      const osc = ac.createOscillator(), gain = ac.createGain(); osc.type = kind === 'hit' ? 'triangle' : 'sine';
-      osc.frequency.setValueAtTime(kind === 'hit' ? 125 : kind === 'success' ? 880 : kind === 'start' ? 440 : 280, ac.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(kind === 'hit' ? 35 : kind === 'success' ? 1320 : 180, ac.currentTime + 0.1);
-      gain.gain.setValueAtTime(kind === 'hit' ? 0.065 : 0.09, ac.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.15);
-      osc.connect(gain); gain.connect(ac.destination); osc.start(); osc.stop(ac.currentTime + 0.16);
-    } catch { /* Audio is optional. */ }
-  }, []);
-  const finish = useCallback((time: number, timedOut = false) => { if (!running.current) return; running.current = false; const won = !timedOut && Math.abs(time - TARGET) <= TOLERANCE; const attempt = { time, timeout: timedOut }; setElapsed(time); setPhase('stopped'); setAttempts(prev => [attempt, ...prev].slice(0, 50)); setAchievementOpen(won); play(won ? 'success' : 'stop'); }, [play]);
-  const act = useCallback(() => { if (running.current) { const time = performance.now() - start.current; finish(Math.min(LIMIT, time), time >= LIMIT); } else { setAchievementOpen(false); start.current = performance.now(); running.current = true; lastHit.current = 0; setElapsed(0); setPhase('running'); play('start'); } }, [finish, play]);
+  const finish = useCallback((time: number, timedOut = false) => { if (!running.current) return; running.current = false; const won = !timedOut && Math.abs(time - TARGET) <= TOLERANCE; const attempt = { time, timeout: timedOut }; setElapsed(time); setPhase('stopped'); setAttempts(prev => [attempt, ...prev].slice(0, 50)); setAchievementOpen(won); }, []);
+  const act = useCallback(() => { if (running.current) { const time = performance.now() - start.current; finish(Math.min(LIMIT, time), time >= LIMIT); } else { setAchievementOpen(false); start.current = performance.now(); running.current = true; setElapsed(0); setPhase('running'); } }, [finish]);
   const reset = useCallback(() => { running.current = false; setAchievementOpen(false); setElapsed(0); setPhase('ready'); }, []);
   useEffect(() => { const keydown = (event: KeyboardEvent) => { if (achievementOpen || event.code !== 'Space' || event.repeat || event.altKey || event.ctrlKey || event.metaKey) return; const target = event.target as HTMLElement; if (target.closest('input,textarea,select,[contenteditable="true"],button,a')) return; event.preventDefault(); if (phase === 'stopped') reset(); else act(); }; window.addEventListener('keydown', keydown); return () => window.removeEventListener('keydown', keydown); }, [act, achievementOpen, phase, reset]);
-  useEffect(() => { if (phase !== 'running') return; let frame: number; const tick = () => { if (!running.current) return; const time = performance.now() - start.current; if (time >= LIMIT) { finish(LIMIT, true); return; } setElapsed(time); if (time - lastHit.current > 540) { lastHit.current = time; play('hit'); } frame = requestAnimationFrame(tick); }; frame = requestAnimationFrame(tick); return () => cancelAnimationFrame(frame); }, [phase, finish, play]);
-  useEffect(() => () => { void audio.current?.close(); }, []);
+  useEffect(() => { if (phase !== 'running') return; let frame: number; const tick = () => { if (!running.current) return; const time = performance.now() - start.current; if (time >= LIMIT) { finish(LIMIT, true); return; } setElapsed(time); frame = requestAnimationFrame(tick); }; frame = requestAnimationFrame(tick); return () => cancelAnimationFrame(frame); }, [phase, finish]);
   const resultTitle = success ? '완벽한 채굴!' : null;
   return <div className="app-shell">
     <main>
       <section className="game" aria-label="10초 타이밍 게임">
         <div className={`mine-scene ${phase === 'running' ? 'mining' : ''}`}>
-          <div className="scene-top"><div className="scene-tools"><Button variant="ghost" size="icon" className="sound-button" aria-label={sound ? '소리 끄기' : '소리 켜기'} aria-pressed={sound} onClick={() => { setSound(!sound); soundEnabled.current = !sound; }}>{sound ? <Volume2 /> : <VolumeX />}</Button></div></div>
           <MiningScene elapsed={elapsed} phase={phase} success={success} />
           <div className="scene-bottom"><div className="hotbar" role="group" aria-label="마인크래프트 핫바: 2번 다이아몬드 곡괭이 선택됨"><span className="hotbar-slot" title="1번: 다이아몬드 검"><img src="/textures/diamond_sword.png" alt="다이아몬드 검" /></span><span className="hotbar-slot selected" title="2번: 다이아몬드 곡괭이 (선택됨)"><img src="/textures/diamond_pickaxe.png" alt="선택된 다이아몬드 곡괭이" /></span><span className="hotbar-slot" /><span className="hotbar-slot" /><span className="hotbar-slot" /><span className="hotbar-slot" title="6번: 물 양동이"><img src="/textures/water_bucket.png" alt="물 양동이" /></span><span className="hotbar-slot" title="7번: 용암 양동이"><img src="/textures/lava_bucket.png" alt="용암 양동이" /></span><span className="hotbar-slot" /><span className="hotbar-slot" title="9번: 횃불"><img src="/textures/torch.png" alt="횃불" /></span></div></div>
         </div>
