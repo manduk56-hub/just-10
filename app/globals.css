@@ -117,14 +117,14 @@ body{background-color:var(--background);background-image:radial-gradient(circle 
 /* Vanilla GUI pixels: 182×22 strip, 20-pixel slot pitch, 24×23 selection. */
 .scene-bottom{justify-content:center;padding:14px 18px;}
 .block-label{bottom:110px;}
-.hotbar{--hotbar-scale:3;display:grid;grid-template-columns:repeat(9,calc(20px * var(--hotbar-scale)));width:calc(182px * var(--hotbar-scale));height:calc(22px * var(--hotbar-scale));padding:0 calc(1px * var(--hotbar-scale));background:url('/textures/hotbar.png') center/100% 100% no-repeat;image-rendering:pixelated;flex:none;}
+.hotbar{--hotbar-scale:3.1;display:grid;grid-template-columns:repeat(9,calc(20px * var(--hotbar-scale)));width:calc(182px * var(--hotbar-scale));height:calc(22px * var(--hotbar-scale));padding:0 calc(1px * var(--hotbar-scale));background:url('/textures/hotbar.png') center/100% 100% no-repeat;image-rendering:pixelated;flex:none;}
 .hotbar-slot{position:relative;display:grid;place-items:center;width:calc(20px * var(--hotbar-scale));height:100%;}
 .hotbar-slot.selected::before{content:'';position:absolute;z-index:1;left:calc(-2px * var(--hotbar-scale));top:calc(-1px * var(--hotbar-scale));width:calc(24px * var(--hotbar-scale));height:calc(23px * var(--hotbar-scale));background:url('/textures/hotbar_selection.png') center/100% 100% no-repeat;pointer-events:none;}
 .hotbar-slot img{width:calc(16px * var(--hotbar-scale));height:calc(16px * var(--hotbar-scale));object-fit:contain;image-rendering:pixelated;}
-@container mining (max-width:590px){.hotbar{--hotbar-scale:2.5}}
-@container mining (max-width:500px){.hotbar{--hotbar-scale:2}.block-label{bottom:92px}}
-@container mining (max-width:400px){.hotbar{--hotbar-scale:1.5}}
-@container mining (max-width:300px){.hotbar{--hotbar-scale:1}}
+@container mining (max-width:610px){.hotbar{--hotbar-scale:2.6}}
+@container mining (max-width:510px){.hotbar{--hotbar-scale:2.1}.block-label{bottom:92px}}
+@container mining (max-width:420px){.hotbar{--hotbar-scale:1.6}}
+@container mining (max-width:320px){.hotbar{--hotbar-scale:1.05}}
 @media(max-width:580px){}
 
 /* Ice Bucket Challenge: an obsidian block inside the vanilla task frame. */

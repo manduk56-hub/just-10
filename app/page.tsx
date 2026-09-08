@@ -20,7 +20,7 @@ function AchievementDialog({ time, onClose, onReset }: { time: number; onClose: 
     element?.showModal();
     return () => { if (element?.open) element.close(); };
   }, []);
-  return <dialog ref={dialog} className="achievement-dialog" aria-labelledby="achievement-title" aria-describedby="achievement-description" onCancel={event => { event.preventDefault(); dismiss(); }} onKeyDown={event => event.stopPropagation()}>
+  return <dialog ref={dialog} className="achievement-dialog" aria-labelledby="achievement-title" aria-describedby="achievement-description" onCancel={event => { event.preventDefault(); dismiss(); }} onKeyDown={event => { event.stopPropagation(); if (event.code === 'Space') event.preventDefault(); }}>
     <button type="button" className="achievement-close" aria-label="업적 팝업 닫기" onClick={dismiss}><X size={20} /></button>
     <p className="achievement-kicker">ADVANCEMENT MADE!</p>
     <h2 id="achievement-title">업적 완료!</h2>
