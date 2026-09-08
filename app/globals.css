@@ -168,7 +168,7 @@ footer{border-color:#71836b;}
 .best-record strong,.attempt{color:#f0f7e8;}
 .best-record strong small,.attempt small{color:#dae5d3;}
 .recent-title>span{background:#536b44;color:#effbde;}
-.attempt.good{color:var(--primary);}
+.attempt.good,.attempt.good small{color:#79f0d2;}
 .timer-label{font-size:13px;}
 .seconds{font-size:10px;}
 .feedback>strong{font-size:14px;}
