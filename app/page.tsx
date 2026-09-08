@@ -38,6 +38,15 @@ function MiningScene({ elapsed, phase, success }: { elapsed: number; phase: Phas
   const assets = useRef<Record<string, HTMLImageElement>>({});
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [successFrame, setSuccessFrame] = useState(0);
+  useEffect(() => {
+    if (phase !== 'stopped' || !success) { setSuccessFrame(0); return; }
+    let frame: number;
+    const startedAt = performance.now();
+    const animate = (now: number) => { setSuccessFrame(now - startedAt); frame = requestAnimationFrame(animate); };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, [phase, success]);
   useEffect(() => {
     let alive = true;
     const names = ['stone', 'obsidian', 'diamond_pickaxe'];
@@ -77,23 +86,32 @@ function MiningScene({ elapsed, phase, success }: { elapsed: number; phase: Phas
       ctx.restore();
     };
     face(8, 4, -8, 4, 0, -144, '#9b8ad513'); face(8, 4, 0, 10, -128, -80, '#0000000a'); face(8, -4, 0, 10, 0, -16, '#00000044'); ctx.restore();
-    if (broken) {
-      ctx.save();
-      ctx.beginPath(); ctx.moveTo(400, 110); ctx.lineTo(533, 177); ctx.lineTo(533, 343); ctx.lineTo(400, 426); ctx.lineTo(267, 343); ctx.lineTo(267, 177); ctx.closePath();
-      ctx.clip();
-      const glint = ctx.createLinearGradient(265, 390, 535, 135);
-      glint.addColorStop(0, '#79f0d200'); glint.addColorStop(0.38, '#79f0d214'); glint.addColorStop(0.48, '#e9fff096'); glint.addColorStop(0.58, '#a77cff38'); glint.addColorStop(1, '#a77cff00');
-      ctx.fillStyle = glint; ctx.fillRect(240, 90, 320, 350);
-      ctx.restore();
-      ctx.strokeStyle = '#8dffe1c7'; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.moveTo(400, 110); ctx.lineTo(533, 177); ctx.lineTo(533, 343); ctx.lineTo(400, 426); ctx.lineTo(267, 343); ctx.lineTo(267, 177); ctx.closePath(); ctx.stroke();
-    }
     if (phase === 'running' || broken) {
-      for (let i = 0; i < (broken ? 20 : 13); i++) { const t = ((elapsed / 520 + i * 0.127) % 1); ctx.globalAlpha = broken ? 0.92 - t * 0.45 : 1 - t; ctx.fillStyle = broken ? ['#8dffe1', '#c9a6ff', '#f2fff8'][i % 3] : ['#685277', '#403448', '#83709b'][i % 3]; const particleSize = broken ? 5 + i % 5 : 5 + i % 4; ctx.fillRect(410 + Math.sin(i * 4.2) * (30 + t * 155), 245 + Math.cos(i * 3.2) * 80 + t * 145, particleSize, particleSize); } ctx.globalAlpha = 1;
+      const motionTime = broken ? successFrame : elapsed;
+      const count = broken ? 32 : 13;
+      for (let i = 0; i < count; i++) {
+        if (broken) {
+          const t = ((motionTime / 1900 + i * 0.083) % 1);
+          const angle = i * 2.399;
+          const radius = 90 + (i * 37) % 125;
+          const x = 400 + Math.cos(angle) * radius + Math.sin(motionTime / 480 + i) * 10;
+          const y = 430 - t * 355 + Math.sin(angle * 1.7) * 32;
+          const particleSize = 5 + i % 5;
+          ctx.globalAlpha = Math.sin(Math.PI * t) * 0.92;
+          ctx.fillStyle = ['#55f6dd', '#79f0d2', '#a9fff0', '#d8fff8'][i % 4];
+          ctx.fillRect(x, y, particleSize, particleSize);
+          if (i % 6 === 0) { ctx.fillRect(x - particleSize, y + 2, particleSize - 2, 3); ctx.fillRect(x + particleSize, y + 2, particleSize - 2, 3); ctx.fillRect(x + 2, y - particleSize, 3, particleSize - 2); ctx.fillRect(x + 2, y + particleSize, 3, particleSize - 2); }
+        } else {
+          const t = ((elapsed / 520 + i * 0.127) % 1);
+          ctx.globalAlpha = 1 - t; ctx.fillStyle = ['#685277', '#403448', '#83709b'][i % 3];
+          ctx.fillRect(410 + Math.sin(i * 4.2) * (30 + t * 135), 260 + Math.cos(i * 3.2) * 65 + t * 130, 5 + i % 4, 5 + i % 4);
+        }
+      }
+      ctx.globalAlpha = 1;
     }
     if (!broken) { ctx.save(); ctx.translate(555, 322); ctx.rotate(phase === 'running' ? -0.24 - Math.max(0, Math.sin(elapsed / 90)) * 0.68 : -0.23); ctx.drawImage(img.diamond_pickaxe, -106, -134, 232, 232); ctx.restore(); }
     if (!broken) { ctx.strokeStyle = '#e8eee99a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(392, 240); ctx.lineTo(408, 240); ctx.moveTo(400, 232); ctx.lineTo(400, 248); ctx.stroke(); }
-  }, [elapsed, phase, success, loaded]);
+  }, [elapsed, phase, success, loaded, successFrame]);
   return <><canvas ref={canvas} width="800" height="600" role="img" aria-label={phase === 'running' ? '다이아몬드 곡괭이로 흑요석을 캐는 중' : success ? '채굴한 흑요석' : '흑요석과 다이아몬드 곡괭이'} />{failed && <div className="scene-error">텍스처를 불러오지 못했어요. 새로고침해 주세요.<br />타이머는 계속 사용할 수 있어요.</div>}</>;
 }
 
