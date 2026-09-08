@@ -169,6 +169,23 @@ footer{border-color:#71836b;}
 .best-record strong small,.attempt small{color:#dae5d3;}
 .recent-title>span{background:#536b44;color:#effbde;}
 .attempt.good{color:var(--primary);}
+.timer-label{font-size:13px;}
+.seconds{font-size:10px;}
+.feedback>strong{font-size:14px;}
+.feedback>span,.feedback.result>span{font-size:12px;}
+.main-action{font-size:14px;}
+.main-action kbd{font-size:10px;}
+.action-note,.action-note button{font-size:11px;}
+.best-record .tiny-caption{font-size:10px;}
+.best-record strong{font-size:20px;}
+.best-record strong small{font-size:11px;}
+.best-record .no-record{font-size:12px;}
+.recent-title{font-size:12px;}
+.recent-title>span{font-size:9px;}
+.empty-record{font-size:12px;}
+.attempt{font-size:13px;}
+.attempt small{font-size:9px;}
+footer{font-size:10px;}
 .record-icon{width:52px;height:52px;filter:brightness(1.15);}
 .record-icon .obsidian-icon{transform:scale(1.333333);filter:brightness(1.7);}
 .obsidian-left{filter:brightness(.9);}
