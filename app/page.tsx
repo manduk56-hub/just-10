@@ -68,6 +68,7 @@ function MiningScene({ elapsed, phase, success }: { elapsed: number; phase: Phas
     ctx.globalAlpha = 1;
     const vignette = ctx.createRadialGradient(400, 255, 20, 400, 280, 520);
     vignette.addColorStop(0, '#58765a30'); vignette.addColorStop(1, '#182820a8'); ctx.fillStyle = vignette; ctx.fillRect(0, 0, 800, 600);
+    ctx.save(); ctx.translate(0, -28);
     const broken = phase === 'stopped' && success;
     if (broken) {
       const aura = ctx.createRadialGradient(400, 260, 35, 400, 260, 230);
@@ -111,6 +112,7 @@ function MiningScene({ elapsed, phase, success }: { elapsed: number; phase: Phas
     }
     if (!broken) { ctx.save(); ctx.translate(555, 322); ctx.rotate(phase === 'running' ? -0.24 - Math.max(0, Math.sin(elapsed / 90)) * 0.68 : -0.23); ctx.drawImage(img.diamond_pickaxe, -106, -134, 232, 232); ctx.restore(); }
     if (!broken) { ctx.strokeStyle = '#e8eee99a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(392, 240); ctx.lineTo(408, 240); ctx.moveTo(400, 232); ctx.lineTo(400, 248); ctx.stroke(); }
+    ctx.restore();
   }, [elapsed, phase, success, loaded, successFrame]);
   return <><canvas ref={canvas} width="800" height="600" role="img" aria-label={phase === 'running' ? '다이아몬드 곡괭이로 흑요석을 캐는 중' : success ? '채굴한 흑요석' : '흑요석과 다이아몬드 곡괭이'} />{failed && <div className="scene-error">텍스처를 불러오지 못했어요. 새로고침해 주세요.<br />타이머는 계속 사용할 수 있어요.</div>}</>;
 }

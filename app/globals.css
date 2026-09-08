@@ -257,3 +257,13 @@ footer{font-size:10px;}
   .records{display:flex;margin-top:12px}
 }
 
+/* Tighten the timer result flow and give the attempt history more presence. */
+@media(min-width:581px){
+  .timer-center{justify-content:flex-end;padding-bottom:4px}
+  .records{min-height:clamp(78px,12vh,108px);padding-top:18px;padding-bottom:18px}
+}
+@media(max-width:580px){
+  .timer-center{padding-bottom:6px}
+  .records{padding:18px}
+}
+
