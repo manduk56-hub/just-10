@@ -157,6 +157,10 @@ footer{border-color:#53654f;}
 .block-label strong{color:#f5f8f0;text-shadow:0 2px 3px #17231a;}
 .timer-digits>span,.timer-digits .unknown-time{color:#d8e5ce;}
 .timer-digits.success,.timer-digits.success>span{color:var(--primary);}
+.timer-digits.ready,.timer-digits.ready>span{color:#c9d3c4;text-shadow:none;}
+.timer-digits.running,.timer-digits.running>span{color:#fffdf4;text-shadow:0 0 16px #f5ffe51c;}
+.timer-digits.stopped,.timer-digits.stopped>span{color:#f3c56f;text-shadow:0 0 18px #f3c56f24;}
+.timer-digits.stopped.success,.timer-digits.stopped.success>span{color:#79f0d2;text-shadow:0 0 20px #79f0d242;}
 .status-pill{background:#4b633d;color:#e0f4ce;}
 .status-pill.stopped{background:#4b5944;}
 .records{background:#384736;border-color:#718369;padding-top:14px;padding-bottom:14px;}
